@@ -120,5 +120,10 @@ Built by [John Faulkner](https://linkedin.com/in/johnathonfaulkner), Agentic AI 
 - Appeals agent for denied authorizations
 - Epic FHIR integration for real patient context
 
+## What it looks like
+
+<img width="1433" height="729" alt="image" src="https://github.com/user-attachments/assets/7a6ae2d3-c4ca-498d-9f9c-2558072f71d9" />
+<img width="1428" height="523" alt="image" src="https://github.com/user-attachments/assets/d0d7dcd0-3f1e-462c-9b0a-eb2eff175f6c" />
+
 ---
 *Part of a portfolio of healthcare agentic AI systems. See all projects at [github.com/jsfaulkner86](https://github.com/jsfaulkner86)*
