@@ -103,11 +103,11 @@ with st.form("prior_auth_form"):
 
 if submitted:
     # Validate API key
-    api_key = os.getenv("OPENAI_API_KEY")
+    api_key = os.getenv("PPLX_API_KEY")
     if not api_key:
         st.error(
-            "**OPENAI_API_KEY not found.** "
-            "If you are running this locally, create a `.env` file with `OPENAI_API_KEY=sk-...`. "
+            "**PPLX_API_KEY not found.** "
+            "If running locally, add `PPLX_API_KEY=pplx-...` to your `.env` file. "
             "On Streamlit Community Cloud, add it under Settings → Secrets."
         )
         st.stop()
@@ -125,7 +125,12 @@ if submitted:
 
         try:
             # ── LLM ──────────────────────────────────────────────────────────
-            llm = ChatOpenAI(model="gpt-4o", temperature=0.2, api_key=api_key)
+            llm = ChatOpenAI(
+                model="sonar-pro",
+                temperature=0.2,
+                api_key=api_key,
+                base_url="https://api.perplexity.ai",
+            )
 
             # ── AGENTS ───────────────────────────────────────────────────────
 
@@ -241,13 +246,6 @@ if submitted:
 
     result_text = str(result)
 
-    # Determine recommendation badge color
-    rec_color = "🟡"  # default: pend
-    if "APPROVE" in result_text.upper() and "NOT APPROVE" not in result_text.upper():
-        rec_color = "🟢"
-    elif "DENY" in result_text.upper():
-        rec_color = "🔴"
-
     col_badge, col_meta = st.columns([1, 2])
     with col_badge:
         if "APPROVE" in result_text.upper() and "NOT APPROVE" not in result_text.upper():
@@ -266,7 +264,6 @@ if submitted:
     st.markdown("### Full Decision Output")
     st.markdown(result_text)
 
-    # Download button
     st.download_button(
         label="⬇ Download Decision Report (.txt)",
         data=f"Prior Auth Decision Report\nCPT: {cpt_code} | Payer: {payer_name}\n\n{result_text}",
