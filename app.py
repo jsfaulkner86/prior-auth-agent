@@ -4,8 +4,7 @@
 
 import os
 import streamlit as st
-from crewai import Agent, Task, Crew, Process
-from langchain_openai import ChatOpenAI
+from crewai import Agent, Task, Crew, Process, LLM
 
 # ── PAGE CONFIG ────────────────────────────────────────────────────────────────
 
@@ -102,13 +101,14 @@ with st.form("prior_auth_form"):
 # ── RUN PIPELINE ───────────────────────────────────────────────────────────────
 
 if submitted:
-    # Validate API key
+    # Validate API key — must be set as PPLX_API_KEY in Streamlit Secrets or .env
     api_key = os.getenv("PPLX_API_KEY")
     if not api_key:
         st.error(
             "**PPLX_API_KEY not found.** "
             "If running locally, add `PPLX_API_KEY=pplx-...` to your `.env` file. "
-            "On Streamlit Community Cloud, add it under Settings → Secrets."
+            "On Streamlit Community Cloud, add it under Settings → Secrets as:\n\n"
+            "```toml\nPPLX_API_KEY = \"pplx-...\"\n```"
         )
         st.stop()
 
@@ -119,17 +119,16 @@ if submitted:
     st.divider()
     st.subheader("Analysis Results")
 
-    # Live status container
     with st.status("Running 3-agent CrewAI pipeline...", expanded=True) as status:
         st.write("🔍 Agent 1: Retrieving payer policy criteria...")
 
         try:
-            # ── LLM ──────────────────────────────────────────────────────────
-            llm = ChatOpenAI(
-                model="sonar-pro",
-                temperature=0.2,
+            # ── LLM (CrewAI v0.80+ native LLM wrapper) ───────────────────────
+            llm = LLM(
+                model="openai/sonar-pro",
                 api_key=api_key,
                 base_url="https://api.perplexity.ai",
+                temperature=0.2,
             )
 
             # ── AGENTS ───────────────────────────────────────────────────────
@@ -197,6 +196,7 @@ if submitted:
                     "and a brief explanation. Include a documentation gaps section."
                 ),
                 agent=criteria_matcher,
+                context=[retrieve_policy],
             )
 
             st.write("📋 Agent 3: Generating decision recommendation...")
@@ -216,6 +216,7 @@ if submitted:
                     "rationale, and documentation requirements."
                 ),
                 agent=decision_summarizer,
+                context=[match_criteria],
             )
 
             # ── CREW ─────────────────────────────────────────────────────────
@@ -227,13 +228,7 @@ if submitted:
                 verbose=False,
             )
 
-            result = prior_auth_crew.kickoff(
-                inputs={
-                    "cpt_code": cpt_code,
-                    "payer_name": payer_name,
-                    "clinical_notes": clinical_notes,
-                }
-            )
+            result = prior_auth_crew.kickoff()
 
             status.update(label="✅ Analysis complete", state="complete", expanded=False)
 
@@ -248,7 +243,7 @@ if submitted:
 
     col_badge, col_meta = st.columns([1, 2])
     with col_badge:
-        if "APPROVE" in result_text.upper() and "NOT APPROVE" not in result_text.upper():
+        if "APPROVE" in result_text.upper() and "NOT APPROVE" not in result_text.upper() and "DENY" not in result_text.upper():
             st.success("**Recommendation: APPROVE**")
         elif "DENY" in result_text.upper():
             st.error("**Recommendation: DENY**")
