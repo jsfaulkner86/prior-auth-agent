@@ -1,15 +1,18 @@
 # Core Agent Framework
-crewai>=0.51.0,<1.0.0
-crewai-tools>=0.8.0,<1.0.0
+crewai==0.63.6
+crewai-tools==0.14.0
 
 # LLM
 langchain>=0.3.0,<0.4.0
 langchain-openai>=0.2.0,<0.3.0
 openai>=1.50.0,<2.0.0
 
+# Pydantic + ChromaDB version lock
+pydantic>=2.7.0,<3.0.0
+chromadb==0.4.24
+
 # Utilities
 python-dotenv>=1.0.1,<2.0.0
-pydantic>=2.7.0,<3.0.0
 tiktoken>=0.7.0,<1.0.0
 
 # Demo UI
