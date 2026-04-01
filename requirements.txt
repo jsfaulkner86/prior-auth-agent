@@ -1,6 +1,6 @@
 # Core Agent Framework
-crewai>=0.80.0,<1.0.0
-crewai-tools>=0.20.0,<1.0.0
+crewai==0.86.0
+crewai-tools==0.28.0
 
 # LLM
 langchain>=0.3.0,<0.4.0
