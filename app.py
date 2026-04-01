@@ -15,10 +15,251 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# ── TFG BRAND THEME ────────────────────────────────────────────────────────────
+# Colors: Blue #6E93B0 | Gold #D4AE48
+# Dark navy backgrounds, gold accents, blue for interactive/info elements
+
+st.markdown(
+    """
+    <style>
+    /* ── Root palette ───────────────────────────────────────────────── */
+    :root {
+        --tfg-blue:        #6E93B0;
+        --tfg-blue-light:  #8AAEC6;
+        --tfg-blue-dark:   #4E7A9A;
+        --tfg-gold:        #D4AE48;
+        --tfg-gold-light:  #E2C46A;
+        --tfg-gold-dark:   #B8912A;
+        --tfg-bg:          #0F1117;
+        --tfg-surface:     #1C2333;
+        --tfg-surface-2:   #232B3E;
+        --tfg-border:      rgba(110, 147, 176, 0.2);
+        --tfg-text:        #E8EDF2;
+        --tfg-text-muted:  #9AABB8;
+    }
+
+    /* ── App background ─────────────────────────────────────────────── */
+    .stApp {
+        background-color: var(--tfg-bg);
+        color: var(--tfg-text);
+    }
+
+    /* ── Sidebar ────────────────────────────────────────────────────── */
+    [data-testid="stSidebar"] {
+        background-color: var(--tfg-surface);
+        border-right: 1px solid var(--tfg-border);
+    }
+    [data-testid="stSidebar"] * {
+        color: var(--tfg-text) !important;
+    }
+    [data-testid="stSidebar"] .stMarkdown table th {
+        color: var(--tfg-gold) !important;
+        border-bottom: 1px solid var(--tfg-border);
+    }
+    [data-testid="stSidebar"] .stMarkdown table td {
+        color: var(--tfg-text-muted) !important;
+    }
+    [data-testid="stSidebar"] hr {
+        border-color: var(--tfg-border);
+    }
+
+    /* ── Page title & headings ──────────────────────────────────────── */
+    h1 {
+        color: var(--tfg-gold) !important;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+    }
+    h2, h3 {
+        color: var(--tfg-blue-light) !important;
+        font-weight: 600;
+    }
+
+    /* ── Text ───────────────────────────────────────────────────────── */
+    p, li, .stMarkdown {
+        color: var(--tfg-text) !important;
+    }
+
+    /* ── Form inputs ────────────────────────────────────────────────── */
+    .stTextInput > div > div > input,
+    .stTextArea > div > div > textarea {
+        background-color: var(--tfg-surface-2) !important;
+        color: var(--tfg-text) !important;
+        border: 1px solid var(--tfg-border) !important;
+        border-radius: 6px !important;
+        caret-color: var(--tfg-gold);
+    }
+    .stTextInput > div > div > input:focus,
+    .stTextArea > div > div > textarea:focus {
+        border-color: var(--tfg-blue) !important;
+        box-shadow: 0 0 0 2px rgba(110, 147, 176, 0.25) !important;
+    }
+
+    /* ── Input labels ───────────────────────────────────────────────── */
+    .stTextInput label,
+    .stTextArea label {
+        color: var(--tfg-blue-light) !important;
+        font-weight: 600 !important;
+        font-size: 0.875rem !important;
+    }
+
+    /* ── Primary button (Run Analysis) ─────────────────────────────── */
+    .stFormSubmitButton > button[kind="primaryFormSubmit"],
+    .stButton > button[kind="primary"] {
+        background-color: var(--tfg-gold) !important;
+        color: #0F1117 !important;
+        border: none !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.02em !important;
+        border-radius: 6px !important;
+        transition: background-color 150ms ease !important;
+    }
+    .stFormSubmitButton > button[kind="primaryFormSubmit"]:hover,
+    .stButton > button[kind="primary"]:hover {
+        background-color: var(--tfg-gold-light) !important;
+    }
+
+    /* ── Secondary / download buttons ──────────────────────────────── */
+    .stDownloadButton > button,
+    .stButton > button[kind="secondary"] {
+        background-color: transparent !important;
+        color: var(--tfg-blue-light) !important;
+        border: 1px solid var(--tfg-blue) !important;
+        border-radius: 6px !important;
+        font-weight: 600 !important;
+    }
+    .stDownloadButton > button:hover,
+    .stButton > button[kind="secondary"]:hover {
+        background-color: rgba(110, 147, 176, 0.12) !important;
+    }
+
+    /* ── Status / spinner box ───────────────────────────────────────── */
+    [data-testid="stStatus"] {
+        background-color: var(--tfg-surface) !important;
+        border: 1px solid var(--tfg-border) !important;
+        border-radius: 8px !important;
+        color: var(--tfg-text) !important;
+    }
+    [data-testid="stStatus"] * {
+        color: var(--tfg-text) !important;
+    }
+
+    /* ── Alert boxes ────────────────────────────────────────────────── */
+    /* Success = APPROVE */
+    [data-testid="stAlert"][data-baseweb="notification"][kind="success"],
+    div.stSuccess {
+        background-color: rgba(110, 147, 176, 0.15) !important;
+        border-left: 4px solid var(--tfg-blue) !important;
+        color: var(--tfg-text) !important;
+    }
+    /* Error = DENY */
+    div.stError {
+        background-color: rgba(180, 60, 60, 0.15) !important;
+        border-left: 4px solid #B43C3C !important;
+        color: var(--tfg-text) !important;
+    }
+    /* Warning = PEND */
+    div.stWarning {
+        background-color: rgba(212, 174, 72, 0.15) !important;
+        border-left: 4px solid var(--tfg-gold) !important;
+        color: var(--tfg-text) !important;
+    }
+    /* Info */
+    div.stInfo {
+        background-color: rgba(110, 147, 176, 0.12) !important;
+        border-left: 4px solid var(--tfg-blue) !important;
+        color: var(--tfg-text) !important;
+    }
+    /* Fix white text inside all alert types */
+    [data-testid="stAlert"] p,
+    [data-testid="stAlert"] div,
+    div.stSuccess p, div.stError p, div.stWarning p, div.stInfo p {
+        color: var(--tfg-text) !important;
+    }
+
+    /* ── Dividers ───────────────────────────────────────────────────── */
+    hr {
+        border-color: var(--tfg-border) !important;
+    }
+
+    /* ── Code / inline code ─────────────────────────────────────────── */
+    code {
+        background-color: var(--tfg-surface-2) !important;
+        color: var(--tfg-gold) !important;
+        border-radius: 4px;
+        padding: 1px 5px;
+    }
+    pre {
+        background-color: var(--tfg-surface-2) !important;
+        border: 1px solid var(--tfg-border) !important;
+        border-radius: 6px;
+    }
+    pre code {
+        color: var(--tfg-blue-light) !important;
+    }
+
+    /* ── Caption / small text ───────────────────────────────────────── */
+    .stCaption, small, .caption {
+        color: var(--tfg-text-muted) !important;
+    }
+
+    /* ── Spinner label ──────────────────────────────────────────────── */
+    .stSpinner > div > div {
+        border-top-color: var(--tfg-gold) !important;
+    }
+
+    /* ── TFG header branding bar ────────────────────────────────────── */
+    .tfg-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 0 16px 0;
+        border-bottom: 1px solid var(--tfg-border);
+        margin-bottom: 20px;
+    }
+    .tfg-header-logo {
+        width: 36px;
+        height: 36px;
+    }
+    .tfg-header-text {
+        font-size: 0.75rem;
+        color: var(--tfg-text-muted);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    /* ── Result output card ─────────────────────────────────────────── */
+    .result-card {
+        background-color: var(--tfg-surface) !important;
+        border: 1px solid var(--tfg-border);
+        border-radius: 8px;
+        padding: 20px 24px;
+        margin-top: 8px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+# ── TFG BRANDING HEADER ────────────────────────────────────────────────────────
+
+st.markdown(
+    """
+    <div class="tfg-header">
+        <svg class="tfg-header-logo" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="The Faulkner Group">
+            <rect width="36" height="36" rx="6" fill="#1C2333"/>
+            <path d="M8 10h20M8 18h12M8 26h16" stroke="#D4AE48" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="27" cy="26" r="4" fill="#6E93B0"/>
+        </svg>
+        <span class="tfg-header-text">The Faulkner Group &nbsp;·&nbsp; Agentic AI</span>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
 # ── SIDEBAR ────────────────────────────────────────────────────────────────────
 
 with st.sidebar:
-    st.markdown("## 🏥 Prior Auth Agent")
+    st.markdown("## Prior Auth Agent")
     st.markdown("**The Faulkner Group**")
     st.divider()
 
@@ -47,7 +288,7 @@ with st.sidebar:
     st.divider()
 
     st.caption(
-        "⚠️ This is a demonstration tool. Output is AI-generated and does not constitute "
+        "⚠️ Demonstration tool only. Output is AI-generated and does not constitute "
         "medical or legal advice. Do not use with real PHI."
     )
 
@@ -101,7 +342,6 @@ with st.form("prior_auth_form"):
 # ── RUN PIPELINE ───────────────────────────────────────────────────────────────
 
 if submitted:
-    # Validate API key — must be set as PPLX_API_KEY in Streamlit Secrets or .env
     api_key = os.getenv("PPLX_API_KEY")
     if not api_key:
         st.error(
@@ -123,15 +363,12 @@ if submitted:
         st.write("🔍 Agent 1: Retrieving payer policy criteria...")
 
         try:
-            # ── LLM (CrewAI v0.80+ native LLM wrapper) ───────────────────────
             llm = LLM(
                 model="openai/sonar-pro",
                 api_key=api_key,
                 base_url="https://api.perplexity.ai",
                 temperature=0.2,
             )
-
-            # ── AGENTS ───────────────────────────────────────────────────────
 
             policy_retriever = Agent(
                 role="Policy Retriever",
@@ -168,8 +405,6 @@ if submitted:
                 llm=llm,
                 verbose=False,
             )
-
-            # ── TASKS ────────────────────────────────────────────────────────
 
             retrieve_policy = Task(
                 description=(
@@ -219,8 +454,6 @@ if submitted:
                 context=[match_criteria],
             )
 
-            # ── CREW ─────────────────────────────────────────────────────────
-
             prior_auth_crew = Crew(
                 agents=[policy_retriever, criteria_matcher, decision_summarizer],
                 tasks=[retrieve_policy, match_criteria, summarize_decision],
@@ -257,7 +490,10 @@ if submitted:
     st.divider()
 
     st.markdown("### Full Decision Output")
-    st.markdown(result_text)
+    st.markdown(
+        f'<div class="result-card">{result_text}</div>',
+        unsafe_allow_html=True,
+    )
 
     st.download_button(
         label="⬇ Download Decision Report (.txt)",
