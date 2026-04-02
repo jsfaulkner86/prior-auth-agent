@@ -342,13 +342,13 @@ with st.form("prior_auth_form"):
 # ── RUN PIPELINE ───────────────────────────────────────────────────────────────
 
 if submitted:
-    api_key = os.getenv("PPLX_API_KEY")
+    api_key = os.getenv("PERPLEXITY_API_KEY") or os.getenv("PPLX_API_KEY")
     if not api_key:
         st.error(
-            "**PPLX_API_KEY not found.** "
-            "If running locally, add `PPLX_API_KEY=pplx-...` to your `.env` file. "
+            "**PERPLEXITY_API_KEY not found.** "
+            "If running locally, add `PERPLEXITY_API_KEY=pplx-...` to your `.env` file. "
             "On Streamlit Community Cloud, add it under Settings → Secrets as:\n\n"
-            "```toml\nPPLX_API_KEY = \"pplx-...\"\n```"
+            "```toml\nPERPLEXITY_API_KEY = \"pplx-...\"\n```"
         )
         st.stop()
 
@@ -363,10 +363,11 @@ if submitted:
         st.write("🔍 Agent 1: Retrieving payer policy criteria...")
 
         try:
+            # ── LLM: Perplexity Sonar via crewai.LLM (LiteLLM provider prefix)
+            # Uses perplexity/ prefix — no OpenAI dependency required.
             llm = LLM(
-                model="openai/sonar-pro",
+                model="perplexity/sonar-pro",
                 api_key=api_key,
-                base_url="https://api.perplexity.ai",
                 temperature=0.2,
             )
 
