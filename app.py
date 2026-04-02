@@ -363,12 +363,14 @@ if submitted:
         st.write("🔍 Agent 1: Retrieving payer policy criteria...")
 
         try:
-            # ── LLM: Perplexity Sonar via crewai.LLM (LiteLLM provider prefix)
-            # Uses perplexity/ prefix — no OpenAI dependency required.
+            # ── LLM: Perplexity Sonar Pro via crewai.LLM (LiteLLM provider prefix)
+            # stop=[] suppresses CrewAI's default "\nObservation" stop words,
+            # which Perplexity rejects with a 400 unsupported_parameter error.
             llm = LLM(
                 model="perplexity/sonar-pro",
                 api_key=api_key,
                 temperature=0.2,
+                stop=[],
             )
 
             policy_retriever = Agent(
